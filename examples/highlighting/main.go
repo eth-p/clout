@@ -1,9 +1,10 @@
 package main
 
 import (
+	"os"
+
 	"go.eth-p.dev/clout"
 	"go.eth-p.dev/clout/pkg/highlight"
-	"os"
 )
 
 func main() {
@@ -32,5 +33,11 @@ func main() {
 		prefix: "{",
 		suffix: "}",
 	})
+
+	// If your terminal supports it, clout can even emit hyperlinks!
+	clout.V(2).Infof("Click %s for the source code.", highlight.Hyperlink(
+		"here",
+		"https://github.com/eth-p/clout/blob/master/pkg/highlight/hyperlink.go",
+	))
 
 }
