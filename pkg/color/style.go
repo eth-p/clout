@@ -1,7 +1,6 @@
 package color
 
 import (
-	"strconv"
 	"strings"
 )
 
@@ -27,13 +26,31 @@ func (s Style) Apply(str string) string {
 	}
 
 	// Foreground.
-	if s.foreground.kind != colorNone {
-		colorKindJumpTable[s.foreground.kind](&sb, s.foreground.value, false)
+	if s.foreground.kind == colorBasic {
+		appendSgrColorBasic(&sb, s.foreground.value, false)
+	} else if s.foreground.kind == colorBright {
+		// TODO: Replace with real function.
+		appendSgrColorNone(&sb, 0, false)
+	} else if s.foreground.kind == color256 {
+		// TODO: Replace with real function.
+		appendSgrColorNone(&sb, 1, false)
+	} else if s.foreground.kind == colorTrue {
+		// TODO: Replace with real function.
+		appendSgrColorNone(&sb, 2, false)
 	}
 
 	// Background.
-	if s.background.kind != colorNone {
-		colorKindJumpTable[s.background.kind](&sb, s.background.value, true)
+	if s.background.kind == colorBasic {
+		appendSgrColorBasic(&sb, s.background.value, true)
+	} else if s.background.kind == colorBright {
+		// TODO: Replace with real function.
+		appendSgrColorNone(&sb, 0, true)
+	} else if s.background.kind == color256 {
+		// TODO: Replace with real function.
+		appendSgrColorNone(&sb, 1, true)
+	} else if s.background.kind == colorTrue {
+		// TODO: Replace with real function.
+		appendSgrColorNone(&sb, 2, true)
 	}
 
 	// Return early if there's nothing to be applied.
@@ -63,16 +80,19 @@ func appendForNextParameter(builder *strings.Builder) {
 }
 
 // ansiReset is the ANSI SGR escape sequence for resetting all colors back to default.
-const ansiReset = "\x1B[0m"
+const ansiReset = "\x1B[m"
 
-// colorToAnsi is a jump table for executing the function responsible for appending
-// the color to a SGR escape sequence.
-var colorKindJumpTable = [...]func(*strings.Builder, uint32, bool){
-	colorNone:   appendSgrColorNone,
-	colorBasic:  appendSgrColorBasic,
-	colorBright: appendSgrColorNone, // TODO:
-	color256:    appendSgrColorNone, // TODO:
-	colorTrue:   appendSgrColorNone, // TODO:
+var intLookupTable = [...]string{
+	0: "0",
+	1: "1",
+	2: "2",
+	3: "3",
+	4: "4",
+	5: "5",
+	6: "6",
+	7: "7",
+	8: "8",
+	9: "9",
 }
 
 // appendSgrColorNone appends a color of `colorNone` kind to the end of a string builder.
@@ -90,5 +110,5 @@ func appendSgrColorBasic(builder *strings.Builder, value uint32, background bool
 		builder.WriteRune('3')
 	}
 
-	builder.WriteString(strconv.Itoa(int(value)))
+	builder.WriteString(intLookupTable[value])
 }
