@@ -5,17 +5,17 @@ import (
 	"testing"
 )
 
-func TestAppendAnsiParameter(t *testing.T) {
+func TestAppendForNextParameter(t *testing.T) {
 	var builder strings.Builder
 
-	appendAnsiParameter(&builder, "0")
-	if builder.String() != "\x1B[0" {
-		t.Fatalf("expected: \"^[0\", got: %#v", builder.String())
+	appendForNextParameter(&builder)
+	if builder.String() != "\x1B[" {
+		t.Fatalf("expected: \"^[\", got: %#v", builder.String())
 	}
 
-	appendAnsiParameter(&builder, "31")
-	if builder.String() != "\x1B[0;31" {
-		t.Fatalf("expected: \"^[0;31\", got: %#v", builder.String())
+	appendForNextParameter(&builder)
+	if builder.String() != "\x1B[;" {
+		t.Fatalf("expected: \"^[;\", got: %#v", builder.String())
 	}
 }
 
