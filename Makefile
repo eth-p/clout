@@ -10,7 +10,7 @@ test: dependencies
 # Benchmark the package tests.
 .PHONY: bench
 bench: dependencies
-	go test -bench=. $(MODULE)/...
+	go test -run="^$$" -benchmem -bench=. $(MODULE)/...
 
 # Target: dependencies
 # Download all dependencies.

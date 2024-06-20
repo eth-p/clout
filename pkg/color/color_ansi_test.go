@@ -83,3 +83,45 @@ func TestApply(t *testing.T) {
 		})
 	}
 }
+
+//
+// Benchmarks:
+//
+
+func benchmarkApply(b *testing.B, style Style) {
+	for n := 0; n < b.N; n++ {
+		style.Apply("a string")
+	}
+}
+
+func BenchmarkApplyEmpty(b *testing.B) {
+	benchmarkApply(b, Style{})
+}
+
+func BenchmarkApplyFgNoneBgNone(b *testing.B) {
+	benchmarkApply(b, Style{
+		foreground: None,
+		background: None,
+	})
+}
+
+func BenchmarkApplyFgBasic(b *testing.B) {
+	benchmarkApply(b, Style{
+		foreground: Red,
+	})
+}
+
+func BenchmarkApplyFgBasicBgBasic(b *testing.B) {
+	benchmarkApply(b, Style{
+		foreground: Red,
+		background: Green,
+	})
+}
+
+func BenchmarkApplyFgBasicBgBasicAttrs(b *testing.B) {
+	benchmarkApply(b, Style{
+		foreground: Red,
+		background: Green,
+		bold:       true,
+	})
+}
