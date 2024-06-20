@@ -60,7 +60,10 @@ When your terminal supports colors, giant walls of plain text can be unwieldy. `
 - Deprecation messages will be prefixed with "deprecated: " and automatically colored yellow.
 - Error messages will be prefixed with "error: " and automatically colored red.
 
-And if you have any text that you feel should be highlighted to stand out (e.g. paths)? You can simply wrap parameters in a `Highlight`, and `clout` will handle it. 
+And if you have any text that you feel should be highlighted to stand out (e.g. paths)? You can simply wrap parameters in a `Highlight`, and `clout` will handle it.
+
+When building for Windows, ANSI color support will be automatically enabled.
+This can be prevented by adding the `windows_no_enable_vti` build tag.
 
 #### Conditional Colors
 
